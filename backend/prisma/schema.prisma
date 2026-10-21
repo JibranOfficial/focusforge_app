@@ -1,0 +1,144 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum TaskStatus {
+  PENDING
+  COMPLETED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String?
+  googleId     String?  @unique
+  avatarUrl    String?
+  xp           Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  settings   UserSettings?
+  subjects   Subject[]
+  tasks      Task[]
+  sessions   FocusSession[]
+  resetCodes PasswordResetCode[]
+}
+
+model UserSettings {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  darkMode Boolean @default(true)
+
+  // Pomodoro
+  focusMinutes      Int @default(25)
+  breakMinutes      Int @default(5)
+  longBreakMinutes  Int @default(15)
+  sessionsBeforeLongBreak Int @default(4)
+
+  // Study reminders (design: Notifications screen)
+  remindersEnabled  Boolean @default(true)
+  studySessionReminder Boolean @default(true)  // 10 minutes before
+  taskDeadlineReminder Boolean @default(true)  // 1 hour before
+  dailyPlanReminder    Boolean @default(true)  // 8:00 AM
+  weeklyReviewReminder Boolean @default(true)  // Sunday 7:00 PM
+  dailyPlanTime        String  @default("08:00")
+  expoPushToken        String?
+
+  updatedAt DateTime @updatedAt
+}
+
+model Subject {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  icon      String   @default("book")
+  color     String   @default("#8B5CF6")
+  createdAt DateTime @default(now())
+
+  topics   Topic[]
+  tasks    Task[]
+  sessions FocusSession[]
+
+  @@unique([userId, name])
+  @@index([userId])
+}
+
+model Topic {
+  id        String   @id @default(cuid())
+  subjectId String
+  subject   Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  name      String
+  done      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([subjectId])
+}
+
+model Task {
+  id               String     @id @default(cuid())
+  userId           String
+  user             User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subjectId        String
+  subject          Subject    @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  title            String
+  description      String?
+  scheduledAt      DateTime
+  estimatedMinutes Int        @default(25)
+  priority         Priority   @default(MEDIUM)
+  status           TaskStatus @default(PENDING)
+  progress         Int        @default(0)
+  completedAt      DateTime?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+
+  sessions FocusSession[]
+
+  @@index([userId, scheduledAt])
+  @@index([userId, status])
+}
+
+model FocusSession {
+  id              String    @id @default(cuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  taskId          String?
+  task            Task?     @relation(fields: [taskId], references: [id], onDelete: SetNull)
+  subjectId       String?
+  subject         Subject?  @relation(fields: [subjectId], references: [id], onDelete: SetNull)
+  startedAt       DateTime
+  endedAt         DateTime?
+  plannedMinutes  Int
+  durationMinutes Int
+  completed       Boolean   @default(true)
+  xpEarned        Int       @default(0)
+  createdAt       DateTime  @default(now())
+
+  @@index([userId, startedAt])
+}
+
+model PasswordResetCode {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  codeHash  String
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
