@@ -1,0 +1,42 @@
+{
+  "expo": {
+    "name": "FocusForge",
+    "slug": "focusforge",
+    "scheme": "focusforge",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "backgroundColor": "#0B1220",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.focusforge.app"
+    },
+    "android": {
+      "package": "com.focusforge.app"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      [
+        "expo-notifications",
+        {
+          "color": "#8B5CF6"
+        }
+      ],
+      "expo-status-bar",
+      "expo-font",
+      "expo-web-browser",
+      "@react-native-community/datetimepicker"
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "a36e3500-03f4-4223-b66a-93793b4dba4d"
+      }
+    }
+  }
+}
