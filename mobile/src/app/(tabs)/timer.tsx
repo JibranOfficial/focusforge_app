@@ -45,12 +45,24 @@ export default function TimerScreen() {
 
   // Keep the screen on during a session.
   useEffect(() => {
-    if (timer.running) void activateKeepAwakeAsync(KEEP_AWAKE_TAG);
-    else void deactivateKeepAwake(KEEP_AWAKE_TAG);
-    return () => {
-      void deactivateKeepAwake(KEEP_AWAKE_TAG);
-    };
-  }, [timer.running]);
+  const release = async () => {
+    try {
+      await deactivateKeepAwake(KEEP_AWAKE_TAG);
+    } catch {
+      // lock was not active yet, nothing to release
+    }
+  };
+
+  if (timer.running) {
+    activateKeepAwakeAsync(KEEP_AWAKE_TAG).catch(() => {});
+  } else {
+    void release();
+  }
+
+  return () => {
+    void release();
+  };
+}, [timer.running]);
 
   const remaining = remainingNow(timer, now);
   const elapsed = timer.totalSec - remaining;

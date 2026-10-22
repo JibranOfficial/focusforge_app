@@ -1,0 +1,23 @@
+{
+  "cli": { "version": ">= 25.3.0", "appVersionSource": "remote" },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal",
+      "android": { "buildType": "apk" },
+      "env": {
+    "EXPO_PUBLIC_API_URL": "https://focusforge-app.onrender.com",
+        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "26119933062-vs0upbk4r5t4mp6ck5f4i3to365mi4mt.apps.googleusercontent.com",
+        "EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID": "26119933062-u75velubr3kul4bb22as6p6jd3n2p7gd.apps.googleusercontent.com",
+        "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "6119933062-lmc9lc67vpttqsf30gjqa2toiku59p9f.apps.googleusercontent.com"
+      }
+    },
+    "production": {
+      "autoIncrement": true
+    }
+  },
+  "submit": { "production": {} }
+}

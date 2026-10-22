@@ -17,7 +17,7 @@ if errorlevel 1 goto fail
 
 echo.
 echo === 3/4  Installing app libraries (versions chosen by Expo) ===
-call npx expo install expo-router react-native-screens react-native-safe-area-context react-native-svg expo-constants expo-linking expo-status-bar expo-font @expo/vector-icons expo-secure-store expo-notifications expo-keep-awake expo-haptics expo-auth-session expo-crypto expo-web-browser expo-system-ui @react-native-community/datetimepicker react-dom react-native-web @expo/metro-runtime
+call npx expo install expo-router react-native-screens react-native-safe-area-context react-native-svg expo-constants expo-linking expo-status-bar expo-font @expo/vector-icons expo-secure-store expo-notifications expo-keep-awake expo-haptics expo-auth-session expo-crypto expo-web-browser expo-system-ui expo-splash-screen @react-native-community/datetimepicker react-dom react-native-web @expo/metro-runtime
 if errorlevel 1 goto fail
 call npm install @expo-google-fonts/inter @tanstack/react-query zustand
 if errorlevel 1 goto fail

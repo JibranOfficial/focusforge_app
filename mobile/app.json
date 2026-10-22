@@ -1,41 +1,46 @@
 {
   "expo": {
     "name": "FocusForge",
-    "slug": "focusforge",
-    "scheme": "focusforge",
+    "slug": "focusforge-mobile",
+    "owner": "jibicodes",
+    "scheme": ["focusforge", "com.focusforge.app"],
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "backgroundColor": "#0B1220",
+    "icon": "./assets/icon.png",
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.focusforge.app"
     },
     "android": {
-      "package": "com.focusforge.app"
+      "package": "com.focusforge.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0B1220"
+      }
     },
     "web": {
       "bundler": "metro",
-      "output": "single"
+      "output": "single",
+      "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-router",
       "expo-secure-store",
+      ["expo-notifications", { "color": "#8B5CF6" }],
       [
-        "expo-notifications",
+        "expo-splash-screen",
         {
-          "color": "#8B5CF6"
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 200,
+          "backgroundColor": "#0B1220"
         }
-      ],
-      "expo-status-bar",
-      "expo-font",
-      "expo-web-browser",
-      "@react-native-community/datetimepicker"
+      ]
     ],
     "extra": {
-      "router": {},
       "eas": {
-        "projectId": "a36e3500-03f4-4223-b66a-93793b4dba4d"
+        "projectId": "6a919c6c-1c27-4a0b-8e05-a649fce32d0c"
       }
     }
   }
